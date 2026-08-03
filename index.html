@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seçkin Sarıgül — Dijital Kartvizit</title>
+<style>
+  :root{
+    --bg-1:#0f172a;
+    --bg-2:#1e293b;
+    --accent:#38bdf8;
+    --accent-2:#818cf8;
+    --card-bg:#ffffff;
+    --text-dark:#0f172a;
+    --text-muted:#64748b;
+    --radius:20px;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px 16px;
+    font-family:'Segoe UI', system-ui, -apple-system, sans-serif;
+    background:radial-gradient(circle at top left, var(--bg-2), var(--bg-1));
+  }
+
+  .card{
+    width:100%;
+    max-width:380px;
+    background:var(--card-bg);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:0 25px 60px rgba(0,0,0,.35);
+  }
+
+  .card-header{
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    padding:36px 28px 64px;
+    position:relative;
+    text-align:center;
+    color:#fff;
+  }
+
+  .card-header::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:-1px;
+    height:40px;
+    background:var(--card-bg);
+    border-radius:50% 50% 0 0 / 100% 100% 0 0;
+  }
+
+  .avatar{
+    width:96px;
+    height:96px;
+    border-radius:50%;
+    margin:0 auto 14px;
+    background:#fff;
+    color:var(--accent-2);
+    font-size:34px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:4px solid rgba(255,255,255,.6);
+    letter-spacing:1px;
+  }
+
+  .card-header h1{
+    margin:0 0 4px;
+    font-size:22px;
+    font-weight:700;
+  }
+
+  .card-header p{
+    margin:0;
+    font-size:14px;
+    opacity:.9;
+    font-weight:500;
+  }
+
+  .card-body{
+    padding:28px 28px 28px;
+    margin-top:-30px;
+    position:relative;
+  }
+
+  .info-list{
+    list-style:none;
+    margin:0 0 24px;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+
+  .info-list li{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    font-size:14px;
+    color:var(--text-dark);
+  }
+
+  .info-list a{
+    color:inherit;
+    text-decoration:none;
+    word-break:break-all;
+  }
+
+  .info-list a:hover{ color:var(--accent-2); }
+
+  .icon{
+    flex:0 0 auto;
+    width:38px;
+    height:38px;
+    border-radius:12px;
+    background:#f1f5f9;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--accent-2);
+  }
+
+  .icon svg{ width:18px; height:18px; }
+
+  .actions{
+    display:flex;
+    gap:10px;
+    margin-bottom:22px;
+  }
+
+  .btn{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:12px 14px;
+    border-radius:12px;
+    font-size:14px;
+    font-weight:600;
+    text-decoration:none;
+    border:none;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+
+  .btn:active{ transform:scale(.97); }
+
+  .btn-primary{
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    color:#fff;
+    box-shadow:0 8px 20px rgba(56,189,248,.35);
+  }
+
+  .btn-secondary{
+    background:#f1f5f9;
+    color:var(--text-dark);
+  }
+
+  .socials{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    padding-top:18px;
+    border-top:1px solid #eef2f7;
+  }
+
+  .socials a{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#f1f5f9;
+    color:var(--text-muted);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    transition:background .15s ease, color .15s ease;
+  }
+
+  .socials a:hover{
+    background:var(--accent-2);
+    color:#fff;
+  }
+
+  .socials svg{ width:17px; height:17px; }
+
+  .footer-note{
+    text-align:center;
+    font-size:11px;
+    color:var(--text-muted);
+    opacity:.7;
+    margin-top:18px;
+  }
+</style>
+</head>
+<body>
+
+  <div id="root"></div>
+
+  <!-- Kurulum gerektirmez: React + Babel CDN üzerinden yüklenir -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useMemo } = React;
+
+    const PROFILE = {
+      initials: "SS",
+      name: "Seçkin Sarıgül",
+      title: "Computer Vision Mühendisi",
+      phone: "+90 543 854 31 38",
+      phoneHref: "+905438543138",
+      email: "seckin.sarigl@gmail.com",
+      website: "www.bizcard.com",
+      websiteHref: "https://www.bizcard.com",
+      tagline: "BizCard projesi kapsamında geliştirildi",
+      socials: [
+        { label: "LinkedIn", href: "#", icon: "linkedin" },
+        { label: "Instagram", href: "#", icon: "instagram" },
+      ],
+    };
+
+    // --- İkonlar -----------------------------------------------------
+
+    function PhoneIcon() {
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z" />
+        </svg>
+      );
+    }
+
+    function MailIcon() {
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M22 6 12 13 2 6" />
+          <rect x="2" y="4" width="20" height="16" rx="2" />
+        </svg>
+      );
+    }
+
+    function GlobeIcon() {
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20z" />
+        </svg>
+      );
+    }
+
+    function PlusIcon() {
+      return (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 5v14M5 12h14" />
+        </svg>
+      );
+    }
+
+    function LinkedInIcon() {
+      return (
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8.25h4V23h-4V8.25zM8.5 8.25h3.83v2.02h.05c.53-1 1.85-2.05 3.8-2.05 4.06 0 4.82 2.67 4.82 6.14V23h-4v-6.72c0-1.6-.03-3.66-2.23-3.66-2.24 0-2.58 1.75-2.58 3.55V23h-4V8.25z" />
+        </svg>
+      );
+    }
+
+    function InstagramIcon() {
+      return (
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.97.24 2.43.4a4.9 4.9 0 0 1 1.77 1.15 4.9 4.9 0 0 1 1.15 1.77c.16.46.35 1.26.4 2.43.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.24 1.97-.4 2.43a4.9 4.9 0 0 1-1.15 1.77 4.9 4.9 0 0 1-1.77 1.15c-.46.16-1.26.35-2.43.4-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.97-.24-2.43-.4a4.9 4.9 0 0 1-1.77-1.15 4.9 4.9 0 0 1-1.15-1.77c-.16-.46-.35-1.26-.4-2.43C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.24-1.97.4-2.43a4.9 4.9 0 0 1 1.15-1.77A4.9 4.9 0 0 1 5.59 1.8c.46-.16 1.26-.35 2.43-.4C9.29 1.34 9.67 1.33 12 1.33m0-1.33C8.74 0 8.33.01 7.05.07c-1.28.06-2.15.26-2.91.56a6.24 6.24 0 0 0-2.25 1.47A6.24 6.24 0 0 0 .42 4.35C.12 5.11-.08 5.98-.14 7.26-.2 8.54-.21 8.95-.21 12.21s.01 3.67.07 4.95c.06 1.28.26 2.15.56 2.91a6.24 6.24 0 0 0 1.47 2.25 6.24 6.24 0 0 0 2.25 1.47c.76.3 1.63.5 2.91.56 1.28.06 1.69.07 4.95.07s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.56a6.24 6.24 0 0 0 2.25-1.47 6.24 6.24 0 0 0 1.47-2.25c.3-.76.5-1.63.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.56-2.91a6.24 6.24 0 0 0-1.47-2.25A6.24 6.24 0 0 0 19.86.63c-.76-.3-1.63-.5-2.91-.56C15.67.01 15.26 0 12 0z" />
+          <path d="M12 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zm0 10.16A4 4 0 1 1 16 12a4 4 0 0 1-4 4zM18.4 4.6a1.44 1.44 0 1 0 1.44 1.44A1.44 1.44 0 0 0 18.4 4.6z" />
+        </svg>
+      );
+    }
+
+    const SOCIAL_ICONS = { linkedin: LinkedInIcon, instagram: InstagramIcon };
+
+    // --- Bileşenler ----------------------------------------------------
+
+    function Avatar({ initials, name, title }) {
+      return (
+        <div className="card-header">
+          <div className="avatar">{initials}</div>
+          <h1>{name}</h1>
+          <p>{title}</p>
+        </div>
+      );
+    }
+
+    function ContactList({ phone, phoneHref, email, website, websiteHref }) {
+      const items = [
+        { icon: <PhoneIcon />, content: <a href={`tel:${phoneHref}`}>{phone}</a> },
+        { icon: <MailIcon />, content: <a href={`mailto:${email}`}>{email}</a> },
+        { icon: <GlobeIcon />, content: <a href={websiteHref} target="_blank" rel="noopener noreferrer">{website}</a> },
+      ];
+
+      return (
+        <ul className="info-list">
+          {items.map((item, i) => (
+            <li key={i}>
+              <span className="icon">{item.icon}</span>
+              {item.content}
+            </li>
+          ))}
+        </ul>
+      );
+    }
+
+    function SocialLinks({ socials }) {
+      return (
+        <div className="socials">
+          {socials.map((s) => {
+            const Icon = SOCIAL_ICONS[s.icon];
+            return (
+              <a key={s.label} href={s.href} aria-label={s.label} target="_blank" rel="noopener noreferrer">
+                <Icon />
+              </a>
+            );
+          })}
+        </div>
+      );
+    }
+
+    function buildVCard(profile) {
+      const [lastName, ...rest] = profile.name.split(" ");
+      const firstName = rest.join(" ");
+      return [
+        "BEGIN:VCARD",
+        "VERSION:3.0",
+        `N:${lastName};${firstName};;;`,
+        `FN:${profile.name}`,
+        `TITLE:${profile.title}`,
+        `TEL;TYPE=CELL:${profile.phoneHref}`,
+        `EMAIL:${profile.email}`,
+        `URL:${profile.websiteHref}`,
+        "END:VCARD",
+      ].join("\r\n");
+    }
+
+    function ProfilCard({ profile }) {
+      const vcardUrl = useMemo(() => {
+        const blob = new Blob([buildVCard(profile)], { type: "text/vcard" });
+        return URL.createObjectURL(blob);
+      }, [profile]);
+
+      const fileName = profile.name.trim().toLowerCase().replace(/\s+/g, "-") + ".vcf";
+
+      return (
+        <div className="card">
+          <Avatar initials={profile.initials} name={profile.name} title={profile.title} />
+
+          <div className="card-body">
+            <ContactList
+              phone={profile.phone}
+              phoneHref={profile.phoneHref}
+              email={profile.email}
+              website={profile.website}
+              websiteHref={profile.websiteHref}
+            />
+
+            <div className="actions">
+              <a className="btn btn-primary" href={vcardUrl} download={fileName}>
+                <PlusIcon />
+                Rehbere Ekle
+              </a>
+              <a className="btn btn-secondary" href={`mailto:${profile.email}`}>
+                <MailIcon />
+                E-posta
+              </a>
+            </div>
+
+            <SocialLinks socials={profile.socials} />
+
+            {profile.tagline && <p className="footer-note">{profile.tagline}</p>}
+          </div>
+        </div>
+      );
+    }
+
+    function App() {
+      return <ProfilCard profile={PROFILE} />;
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+
+</body>
+</html>
+
