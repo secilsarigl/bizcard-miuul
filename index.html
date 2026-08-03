@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seçkin Sarıgül — Dijital Kartvizit</title>
+<title>Seçil Sarıgül — Dijital Kartvizit</title>
 <style>
   :root{
     --bg-1:#0f172a;
@@ -242,13 +242,11 @@
 
     const PROFILE = {
       initials: "SS",
-      name: "Seçkin Sarıgül",
+      name: "Seçil Sarıgül",
       title: "Computer Vision Mühendisi",
       phone: "+90 543 854 31 38",
       phoneHref: "+905438543138",
-      email: "seckin.sarigl@gmail.com",
-      website: "www.bizcard.com",
-      websiteHref: "https://www.bizcard.com",
+      email: "secil.sarigl@gmail.com",
       tagline: "BizCard projesi kapsamında geliştirildi",
       socials: [
         { label: "LinkedIn", href: "#", icon: "linkedin" },
@@ -271,15 +269,6 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M22 6 12 13 2 6" />
           <rect x="2" y="4" width="20" height="16" rx="2" />
-        </svg>
-      );
-    }
-
-    function GlobeIcon() {
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20z" />
         </svg>
       );
     }
@@ -323,11 +312,10 @@
       );
     }
 
-    function ContactList({ phone, phoneHref, email, website, websiteHref }) {
+    function ContactList({ phone, phoneHref, email }) {
       const items = [
         { icon: <PhoneIcon />, content: <a href={`tel:${phoneHref}`}>{phone}</a> },
         { icon: <MailIcon />, content: <a href={`mailto:${email}`}>{email}</a> },
-        { icon: <GlobeIcon />, content: <a href={websiteHref} target="_blank" rel="noopener noreferrer">{website}</a> },
       ];
 
       return (
@@ -368,7 +356,6 @@
         `TITLE:${profile.title}`,
         `TEL;TYPE=CELL:${profile.phoneHref}`,
         `EMAIL:${profile.email}`,
-        `URL:${profile.websiteHref}`,
         "END:VCARD",
       ].join("\r\n");
     }
@@ -390,8 +377,6 @@
               phone={profile.phone}
               phoneHref={profile.phoneHref}
               email={profile.email}
-              website={profile.website}
-              websiteHref={profile.websiteHref}
             />
 
             <div className="actions">

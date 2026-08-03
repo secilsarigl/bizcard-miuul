@@ -18,13 +18,11 @@ BizCard'ın bileşen yazım kuralları ve webhook veri sözleşmesi için tek re
 ```js
 window.BIZCARD_DATA = {
   initials: "SS",
-  name: "Seçkin Sarıgül",
+  name: "Seçil Sarıgül",
   title: "Computer Vision Mühendisi",
   phone: "+90 543 854 31 38",
   phoneHref: "+905438543138",
-  email: "seckin.sarigl@gmail.com",
-  website: "www.bizcard.com",
-  websiteHref: "https://www.bizcard.com",
+  email: "secil.sarigl@gmail.com",
   tagline: "BizCard projesi kapsamında geliştirildi",
   socials: [
     { label: "LinkedIn", href: "#", icon: "linkedin" },
@@ -65,11 +63,10 @@ Ziyaretçi kartı kendi rehberine/CRM'sine kaydetmek istediğinde tetiklenir.
   "timestamp": "2026-08-02T15:04:00Z",
   "payload": {
     "card": {
-      "name": "Seçkin Sarıgül",
+      "name": "Seçil Sarıgül",
       "title": "Computer Vision Mühendisi",
       "phone": "+905438543138",
-      "email": "seckin.sarigl@gmail.com",
-      "website": "https://www.bizcard.com"
+      "email": "secil.sarigl@gmail.com"
     },
     "source": {
       "userAgent": "string",
@@ -95,8 +92,8 @@ Ziyaretçi kart sahibinden toplantı talep ettiğinde tetiklenir.
     "message": "string | null",
     "preferredDate": "ISO 8601 date | null",
     "cardOwner": {
-      "name": "Seçkin Sarıgül",
-      "email": "seckin.sarigl@gmail.com"
+      "name": "Seçil Sarıgül",
+      "email": "secil.sarigl@gmail.com"
     }
   }
 }
