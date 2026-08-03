@@ -55,7 +55,7 @@ window.BIZCARD_DATA = {
 ```
 
 ### 1. Kartı Kaydet — `event: "card.save"`
-Ziyaretçi kartı kendi rehberine/CRM'sine kaydetmek istediğinde tetiklenir.
+Ziyaretçi kartı kendi rehberine/CRM'sine kaydetmek istediğinde tetiklenir. Ziyaretçi, "Kartı Kaydet" formuna kendi adını ve e-posta adresini girer (`savedBy`); bu iki alan formda HTML5 `required` olduğundan asla `null` gönderilmez.
 
 ```json
 {
@@ -71,6 +71,10 @@ Ziyaretçi kartı kendi rehberine/CRM'sine kaydetmek istediğinde tetiklenir.
     "source": {
       "userAgent": "string",
       "referrer": "string | null"
+    },
+    "savedBy": {
+      "name": "string",
+      "email": "string"
     }
   }
 }
