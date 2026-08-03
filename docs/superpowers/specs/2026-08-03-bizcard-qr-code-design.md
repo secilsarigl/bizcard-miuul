@@ -15,8 +15,9 @@ Dijital kartvizitin altına, kartın canlı (deploy edilmiş) adresine yönlenen
 
 `qrcode.react` npm paketi UMD/global tarayıcı derlemesi yayınlamıyor (yalnızca ESM/CJS). Bu nedenle:
 
-- `QRCodeSVG` bileşeni `https://esm.sh/qrcode.react@4?bundle` adresinden ES modülü olarak import edilir.
-- `?bundle` parametresi, paketin kendi React/ReactDOM bağımlılıklarını da paketler; bu izole kopya, sayfanın ana UMD React örneğiyle **paylaşılmaz** ama çakışmaz da — çünkü kendi ayrı DOM köküne (`#qr-slot`) render edilir ve ana kartın React ağacıyla hiç etkileşmez.
+- Bir `<script type="importmap">` ile `"react"` ve `"react-dom/client"` bare specifier'ları esm.sh'in ESM derlemelerine bağlanır.
+- `QRCodeSVG` bileşeni `https://esm.sh/qrcode.react@4?external=react,react-dom` adresinden, `react`/`react-dom`'u kendi bağımlılığı olarak değil import map üzerinden dışarıdan alacak şekilde import edilir.
+- Böylece hem mounting kodu (`React.createElement` + `createRoot`) hem de `QRCodeSVG` aynı ES modül React/ReactDOM örneğini paylaşır — ama bu örnek, sayfanın ana UMD React'inden (window.React) tamamen izoledir. İki React de birbirine karışmaz çünkü ayrı modül sistemleri (UMD global vs. ESM import) kullanırlar ve QR kendi ayrı DOM köküne (`#qr-slot`) render edilir.
 - Bu modül script'i, ana Babel script'inden bağımsız çalışır; ikisi arasında veri paylaşımı yoktur (QR hedefi sabit bir string).
 
 ## Yerleşim ve Stil
