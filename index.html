@@ -209,10 +209,11 @@
     border-radius:var(--radius);
     box-shadow:0 15px 40px rgba(0,0,0,.25);
     padding:20px;
-    display:flex;
+    display:none;
     align-items:center;
     justify-content:center;
   }
+  .qr-panel.is-ready{ display:flex; }
 </style>
   <script type="importmap">
   {
@@ -429,6 +430,7 @@
 
     if (slot) {
       createRoot(slot).render(React.createElement(QRCodeSVG, { value: LIVE_URL, size: 150 }));
+      slot.parentElement.classList.add("is-ready");
     }
   </script>
 

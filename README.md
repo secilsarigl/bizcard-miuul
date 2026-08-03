@@ -2,6 +2,8 @@
 
 Kullanıcıların bilgilerini girerek dijital kartvizit ve QR kod oluşturabileceği bir web uygulaması.
 
+**Canlı demo:** https://secilsarigl.github.io/bizcard-miuul/
+
 ## Proje Hakkında
 
 BizCard, uçtan uca çalışan, gösterilebilir bir ürün örneği olarak geliştiriliyor — küçük ama tam bir sistem (frontend + backend + veri akışı) kurma pratiği.
