@@ -2,7 +2,7 @@
 
 Kullanıcıların bilgilerini girerek dijital kartvizit ve QR kod oluşturabileceği bir web uygulaması.
 
-**Canlı demo:** https://secilsarigl.github.io/bizcard-miuul/
+**Canlı demo:** https://bizcard-miuul-chi.vercel.app/
 
 ## Proje Hakkında
 

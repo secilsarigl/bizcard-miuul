@@ -23,7 +23,7 @@ BizCard, kullanıcıların bilgilerini girerek dijital kartvizit ve QR kod oluş
 Not: Bu liste ilk varsayımdır, ürünü gerçek kullanıcılarla test ettikçe güncellenmeli.
 
 ## Durum Notu
-Proje erken aşamada ama artık boş değil: `index.html` içinde, kurulum gerektirmeyen, React/ReactDOM/Babel CDN üzerinden çalışan tek dosyalık bir demo dijital kartvizit mevcut ve kartın altında, canlı GitHub Pages adresine (https://secilsarigl.github.io/bizcard-miuul/) yönlendiren bir QR kod paneli var. Backend/teknoloji yığını ise henüz seçilmedi (TBD). Aşağıdaki bölümler (Teknoloji Yığını, Geliştirme Komutları, Klasör Yapısı) backend/build tarafı netleşene kadar bilinçli olarak placeholder bırakıldı; kod eklendikçe bu dosyayı gerçek mimari, komutlar ve klasör yapısıyla güncelle, sahte/varsayımsal bilgiyle doldurma.
+Proje erken aşamada ama artık boş değil: `index.html` içinde, kurulum gerektirmeyen, React/ReactDOM/Babel CDN üzerinden çalışan tek dosyalık bir demo dijital kartvizit mevcut ve kartın altında, canlı Vercel adresine (https://bizcard-miuul-chi.vercel.app/) yönlendiren bir QR kod paneli var. Backend/teknoloji yığını ise henüz seçilmedi (TBD). Aşağıdaki bölümler (Teknoloji Yığını, Geliştirme Komutları, Klasör Yapısı) backend/build tarafı netleşene kadar bilinçli olarak placeholder bırakıldı; kod eklendikçe bu dosyayı gerçek mimari, komutlar ve klasör yapısıyla güncelle, sahte/varsayımsal bilgiyle doldurma.
 
 ## Teknoloji Yığını
 Henüz seçilmedi (TBD). Değerlendirilebilecek adaylar:
