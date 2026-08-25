@@ -187,6 +187,7 @@
   }
 
   .btn:active{ transform:scale(.97); }
+  .btn:disabled{ opacity:.6; cursor:not-allowed; transform:none; }
 
   .btn-primary{
     background:linear-gradient(135deg, var(--accent), var(--accent-2));
@@ -456,8 +457,13 @@
     }
 
     function CardActionsForm({ profile }) {
+      const [isSubmitting, setIsSubmitting] = React.useState(false);
+      const isSubmittingRef = React.useRef(false);
+
       function handleSubmit(event) {
         event.preventDefault();
+
+        if (isSubmittingRef.current) return;
 
         const form = event.target;
         const action = event.nativeEvent.submitter.value;
@@ -474,6 +480,9 @@
         const visitorName = formData.get("visitorName").trim();
         const visitorEmail = formData.get("visitorEmail").trim();
         const preferredDate = formData.get("preferredDate");
+
+        isSubmittingRef.current = true;
+        setIsSubmitting(true);
 
         if (action === "save") {
           downloadVCard(profile);
@@ -519,6 +528,14 @@
         }
 
         form.reset();
+
+        // Buton kısa süre devre dışı kalır; hızlı art arda tıklamalarda
+        // ikinci gönderim engellenir. Gerçek webhook eklendiğinde bu
+        // gecikme yerine fetch'in tamamlanmasını beklemeye geçilecek.
+        window.setTimeout(() => {
+          isSubmittingRef.current = false;
+          setIsSubmitting(false);
+        }, 800);
       }
 
       return (
@@ -542,11 +559,11 @@
             />
           </div>
           <div className="actions">
-            <button type="submit" name="action" value="save" className="btn btn-primary">
+            <button type="submit" name="action" value="save" className="btn btn-primary" disabled={isSubmitting}>
               <PlusIcon />
               Kartı Kaydet
             </button>
-            <button type="submit" name="action" value="meeting" className="btn btn-primary">
+            <button type="submit" name="action" value="meeting" className="btn btn-primary" disabled={isSubmitting}>
               <CalendarIcon />
               Toplantı Talep Et
             </button>
