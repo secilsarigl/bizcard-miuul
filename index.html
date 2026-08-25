@@ -271,6 +271,102 @@
   .contact-panel .btn{
     width:100%;
   }
+
+  .consent-field label{
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    font-size:12px;
+    color:var(--text-muted);
+    cursor:pointer;
+  }
+
+  .consent-field input[type="checkbox"]{
+    margin-top:2px;
+    flex:0 0 auto;
+  }
+
+  .link-btn{
+    color:var(--accent-2);
+    text-decoration:underline;
+    background:none;
+    border:none;
+    padding:0;
+    font:inherit;
+    cursor:pointer;
+  }
+
+  .policy-link{
+    display:block;
+    margin:10px auto 0;
+    font-size:11px;
+    text-align:center;
+  }
+
+  .policy-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.6);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:1000;
+  }
+
+  .policy-panel{
+    width:100%;
+    max-width:560px;
+    max-height:85vh;
+    background:var(--card-bg);
+    border-radius:var(--radius);
+    box-shadow:0 25px 60px rgba(0,0,0,.45);
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+
+  .policy-header{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    padding:20px 24px;
+    border-bottom:1px solid #eef2f7;
+  }
+
+  .policy-header h2{
+    margin:0;
+    font-size:16px;
+    font-weight:700;
+    color:var(--text-dark);
+  }
+
+  .policy-close{
+    flex:0 0 auto;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    border:none;
+    background:#f1f5f9;
+    color:var(--text-muted);
+    font-size:18px;
+    line-height:1;
+    cursor:pointer;
+  }
+
+  .policy-body{
+    padding:20px 24px 28px;
+    overflow-y:auto;
+    font-size:13px;
+    line-height:1.6;
+    color:var(--text-dark);
+  }
+
+  .policy-body h3{ font-size:13px; margin:18px 0 6px; }
+  .policy-body h3:first-child{ margin-top:0; }
+  .policy-body p, .policy-body li{ margin:0 0 8px; }
+  .policy-body ul{ margin:0 0 8px; padding-left:18px; }
 </style>
   <script type="importmap">
   {
@@ -456,7 +552,7 @@
       return `${year}-${month}-${day}`;
     }
 
-    function CardActionsForm({ profile }) {
+    function CardActionsForm({ profile, onOpenPolicy }) {
       const [isSubmitting, setIsSubmitting] = React.useState(false);
       const isSubmittingRef = React.useRef(false);
 
@@ -558,6 +654,26 @@
               onInput={(event) => event.target.setCustomValidity("")}
             />
           </div>
+          <div className="form-field consent-field">
+            <label>
+              <input name="consent" type="checkbox" required />
+              <span>
+                <button
+                  type="button"
+                  className="link-btn"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    onOpenPolicy();
+                  }}
+                >
+                  Gizlilik Politikası
+                </button>
+                'nı okudum, kişisel
+                verilerimin işlenmesini kabul ediyorum.
+              </span>
+            </label>
+          </div>
           <div className="actions">
             <button type="submit" name="action" value="save" className="btn btn-primary" disabled={isSubmitting}>
               <PlusIcon />
@@ -592,7 +708,102 @@
       );
     }
 
-    function ProfilCard({ profile }) {
+    function PrivacyPolicyModal({ isOpen, onClose }) {
+      if (!isOpen) return null;
+
+      return (
+        <div className="policy-overlay" onClick={onClose}>
+          <div className="policy-panel" onClick={(event) => event.stopPropagation()}>
+            <div className="policy-header">
+              <h2>Gizlilik Politikası ve Kişisel Verilerin Korunmasına İlişkin Aydınlatma Metni</h2>
+              <button type="button" className="policy-close" onClick={onClose} aria-label="Kapat">×</button>
+            </div>
+            <div className="policy-body">
+              <p><strong>Son güncelleme:</strong> 25.08.2026</p>
+
+              <h3>1. Veri Sorumlusu</h3>
+              <p>
+                Bu dijital kartvizit uygulaması Seçil Sarıgül tarafından, 6698 sayılı Kişisel Verilerin
+                Korunması Kanunu ("KVKK") ve Avrupa Birliği Genel Veri Koruma Tüzüğü ("GDPR") kapsamında
+                veri sorumlusu sıfatıyla işletilmektedir. İletişim: secil.sarigl@gmail.com
+              </p>
+
+              <h3>2. Toplanan Kişisel Veriler</h3>
+              <ul>
+                <li>
+                  "Kartı Kaydet" ve "Toplantı Talep Et" formu: ad soyad, e-posta adresi ve (toplantı
+                  talebinde) tercih edilen tarih.
+                </li>
+                <li>
+                  Otomatik olarak toplanan teknik veriler: tarayıcı bilgisi (user agent) ve yönlendiren
+                  sayfa adresi (referrer).
+                </li>
+                <li>
+                  "Telefonuma Ekle" özelliği kart sahibinin bilgilerini (ad, e-posta, telefon) bir .vcf
+                  dosyası olarak doğrudan cihazınıza indirir; bu işlem tamamen tarayıcınızda gerçekleşir,
+                  hiçbir veri sunucuya gönderilmez ve bu adımda ziyaretçiye ait herhangi bir kişisel veri
+                  toplanmaz.
+                </li>
+              </ul>
+
+              <h3>3. İşleme Amaçları</h3>
+              <p>
+                Kişisel verileriniz; kartvizit kaydetme talebinizi ve toplantı talebinizi işleme almak,
+                talebinizle ilgili sizinle iletişime geçmek amacıyla işlenir.
+              </p>
+
+              <h3>4. Hukuki Sebep</h3>
+              <p>
+                Veriler, formu göndermeden önce işaretlediğiniz onay kutusuyla verdiğiniz açık rızaya
+                dayanılarak (KVKK m. 5/1; GDPR m. 6/1-a) işlenmektedir.
+              </p>
+
+              <h3>5. Verilerin Aktarımı</h3>
+              <p>
+                Bu proje şu an bir demo/portföy çalışmasıdır: form gönderiminde toplanan veriler yalnızca
+                tarayıcı konsoluna kaydedilmekte olup üçüncü bir sunucuya veya hizmete aktarılmamaktadır.
+                İleride bir backend/webhook entegrasyonu devreye alındığında bu politika güncellenecek ve
+                aktarım burada açıkça belirtilecektir.
+              </p>
+
+              <h3>6. Saklama Süresi</h3>
+              <p>
+                Verileriniz, talebinizin işlenmesi ve olası iletişim için gereken süre boyunca saklanır;
+                bu süre sonunda silinir veya anonim hale getirilir.
+              </p>
+
+              <h3>7. Haklarınız</h3>
+              <p>KVKK m. 11 ve GDPR m. 15-22 uyarınca aşağıdaki haklara sahipsiniz:</p>
+              <ul>
+                <li>Kişisel verinizin işlenip işlenmediğini öğrenme ve işlenmişse buna ilişkin bilgi talep etme,</li>
+                <li>İşlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme,</li>
+                <li>Yurt içinde/dışında aktarıldığı üçüncü kişileri bilme,</li>
+                <li>Eksik veya yanlış işlenmişse düzeltilmesini isteme,</li>
+                <li>Silinmesini veya yok edilmesini isteme ("unutulma hakkı"),</li>
+                <li>Düzeltme/silme taleplerinin aktarıldığı üçüncü kişilere bildirilmesini isteme,</li>
+                <li>Otomatik sistemlerle yapılan analiz sonucu aleyhinize bir sonucun ortaya çıkmasına itiraz etme,</li>
+                <li>Kanuna aykırı işleme nedeniyle zarara uğramanız hâlinde zararın giderilmesini talep etme,</li>
+                <li>
+                  (GDPR) Verilerinizin taşınabilirliğini talep etme, rızanızı istediğiniz zaman geri
+                  çekme ve bir denetim otoritesine şikâyette bulunma.
+                </li>
+              </ul>
+
+              <h3>8. Çerezler</h3>
+              <p>Bu uygulama çerez veya benzeri izleme teknolojileri kullanmamaktadır.</p>
+
+              <h3>9. Başvuru</h3>
+              <p>
+                Yukarıdaki haklarınızı kullanmak için secil.sarigl@gmail.com adresinden bizimle
+                iletişime geçebilirsiniz.
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function ProfilCard({ profile, onOpenPolicy }) {
       return (
         <div className="card">
           <Avatar initials={profile.initials} name={profile.name} title={profile.title} />
@@ -604,21 +815,28 @@
               email={profile.email}
             />
 
-            <CardActionsForm profile={profile} />
+            <CardActionsForm profile={profile} onOpenPolicy={onOpenPolicy} />
 
             <SocialLinks socials={profile.socials} />
 
             {profile.tagline && <p className="footer-note">{profile.tagline}</p>}
+
+            <button type="button" className="link-btn policy-link" onClick={onOpenPolicy}>
+              Gizlilik Politikası
+            </button>
           </div>
         </div>
       );
     }
 
     function App() {
+      const [isPolicyOpen, setIsPolicyOpen] = React.useState(false);
+
       return (
         <>
-          <ProfilCard profile={PROFILE} />
+          <ProfilCard profile={PROFILE} onOpenPolicy={() => setIsPolicyOpen(true)} />
           <AddToContactsPanel profile={PROFILE} />
+          <PrivacyPolicyModal isOpen={isPolicyOpen} onClose={() => setIsPolicyOpen(false)} />
         </>
       );
     }
