@@ -1,20 +1,15 @@
-import { SafeAreaView, ScrollView, View, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { PROFILE } from './src/data/card';
-import { Avatar } from './src/components/Avatar';
-import { ContactList } from './src/components/ContactList';
-import { SocialLinks } from './src/components/SocialLinks';
+import { ProfileCard } from './src/components/ProfileCard';
 
 export default function App() {
+  const [isPolicyOpen, setIsPolicyOpen] = useState(false);
+
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.card}>
-          <Avatar initials={PROFILE.initials} name={PROFILE.name} title={PROFILE.title} />
-          <View style={styles.body}>
-            <ContactList phone={PROFILE.phone} phoneHref={PROFILE.phoneHref} email={PROFILE.email} />
-            <SocialLinks socials={PROFILE.socials} />
-          </View>
-        </View>
+        <ProfileCard profile={PROFILE} onOpenPolicy={() => setIsPolicyOpen(true)} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -22,7 +17,5 @@ export default function App() {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: '#0f172a' },
-  content: { padding: 16, alignItems: 'center' },
-  card: { width: '100%', maxWidth: 380, backgroundColor: '#fff', borderRadius: 20, overflow: 'hidden' },
-  body: { padding: 28 },
+  content: { padding: 16, alignItems: 'center', gap: 20 },
 });
