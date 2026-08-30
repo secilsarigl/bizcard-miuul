@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Avatar } from './Avatar';
 import { ContactList } from './ContactList';
+import { CardActionsForm } from './CardActionsForm';
 import { SocialLinks } from './SocialLinks';
 
 export function ProfileCard({ profile, onOpenPolicy }) {
@@ -9,6 +10,7 @@ export function ProfileCard({ profile, onOpenPolicy }) {
       <Avatar initials={profile.initials} name={profile.name} title={profile.title} />
       <View style={styles.body}>
         <ContactList phone={profile.phone} phoneHref={profile.phoneHref} email={profile.email} />
+        <CardActionsForm profile={profile} onOpenPolicy={onOpenPolicy} />
         <SocialLinks socials={profile.socials} />
         {profile.tagline ? <Text style={styles.footerNote}>{profile.tagline}</Text> : null}
         <TouchableOpacity onPress={onOpenPolicy}>
