@@ -1,4 +1,5 @@
 import * as Contacts from 'expo-contacts';
+import { Alert } from 'react-native';
 
 export async function addOwnerToDeviceContacts(profile) {
   const { status } = await Contacts.requestPermissionsAsync();
@@ -6,8 +7,8 @@ export async function addOwnerToDeviceContacts(profile) {
     return { added: false, reason: 'permission-denied' };
   }
 
-  const [lastName, ...rest] = profile.name.split(' ');
-  const firstName = rest.join(' ');
+  const [firstName, ...rest] = profile.name.split(' ');
+  const lastName = rest.join(' ');
 
   await Contacts.addContactAsync({
     [Contacts.Fields.FirstName]: firstName,
@@ -18,4 +19,17 @@ export async function addOwnerToDeviceContacts(profile) {
   });
 
   return { added: true };
+}
+
+export async function saveOwnerToContactsWithFeedback(profile) {
+  try {
+    const result = await addOwnerToDeviceContacts(profile);
+    if (result.added) {
+      Alert.alert('Eklendi', 'Kartvizit rehberinize eklendi.');
+    } else {
+      Alert.alert('İzin gerekli', 'Rehbere eklemek için kişiler izni gerekiyor.');
+    }
+  } catch (error) {
+    Alert.alert('Hata', 'Rehbere eklenirken bir sorun oluştu.');
+  }
 }

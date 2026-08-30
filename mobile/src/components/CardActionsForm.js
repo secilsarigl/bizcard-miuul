@@ -2,8 +2,15 @@ import { useState, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Switch, StyleSheet, Platform, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Feather } from '@expo/vector-icons';
-import { addOwnerToDeviceContacts } from '../lib/contacts';
+import { saveOwnerToContactsWithFeedback } from '../lib/contacts';
 import { buildCardSaveEvent, buildMeetingRequestEvent, logEvent } from '../lib/events';
+
+function toLocalDateString(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
 
 export function CardActionsForm({ profile, onOpenPolicy }) {
   const [visitorName, setVisitorName] = useState('');
@@ -37,27 +44,26 @@ export function CardActionsForm({ profile, onOpenPolicy }) {
     isSubmittingRef.current = true;
     setIsSubmitting(true);
 
-    const visitor = { name: visitorName.trim(), email: visitorEmail.trim() };
+    try {
+      const visitor = { name: visitorName.trim(), email: visitorEmail.trim() };
 
-    if (action === 'save') {
-      const result = await addOwnerToDeviceContacts(profile);
-      if (!result.added) {
-        Alert.alert('İzin gerekli', 'Rehbere eklemek için kişiler izni gerekiyor.');
+      if (action === 'save') {
+        await saveOwnerToContactsWithFeedback(profile);
+        logEvent(buildCardSaveEvent(profile, visitor));
+      } else {
+        logEvent(buildMeetingRequestEvent(profile, visitor, toLocalDateString(preferredDate)));
       }
-      logEvent(buildCardSaveEvent(profile, visitor));
-    } else {
-      logEvent(buildMeetingRequestEvent(profile, visitor, preferredDate.toISOString().slice(0, 10)));
+
+      setVisitorName('');
+      setVisitorEmail('');
+      setPreferredDate(null);
+      setConsent(false);
+    } finally {
+      setTimeout(() => {
+        isSubmittingRef.current = false;
+        setIsSubmitting(false);
+      }, 800);
     }
-
-    setVisitorName('');
-    setVisitorEmail('');
-    setPreferredDate(null);
-    setConsent(false);
-
-    setTimeout(() => {
-      isSubmittingRef.current = false;
-      setIsSubmitting(false);
-    }, 800);
   }
 
   return (
