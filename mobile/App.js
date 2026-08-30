@@ -1,11 +1,12 @@
-import { SafeAreaView, ScrollView, Text, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { PROFILE } from './src/data/card';
+import { Avatar } from './src/components/Avatar';
 
 export default function App() {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.name}>{PROFILE.name}</Text>
+        <Avatar initials={PROFILE.initials} name={PROFILE.name} title={PROFILE.title} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -14,5 +15,4 @@ export default function App() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: '#0f172a' },
   content: { padding: 16, alignItems: 'center' },
-  name: { color: '#fff', fontSize: 22, fontWeight: '700' },
 });
