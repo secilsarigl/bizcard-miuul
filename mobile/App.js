@@ -2,6 +2,7 @@ import { SafeAreaView, ScrollView, View, StyleSheet } from 'react-native';
 import { PROFILE } from './src/data/card';
 import { Avatar } from './src/components/Avatar';
 import { ContactList } from './src/components/ContactList';
+import { SocialLinks } from './src/components/SocialLinks';
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
           <Avatar initials={PROFILE.initials} name={PROFILE.name} title={PROFILE.title} />
           <View style={styles.body}>
             <ContactList phone={PROFILE.phone} phoneHref={PROFILE.phoneHref} email={PROFILE.email} />
+            <SocialLinks socials={PROFILE.socials} />
           </View>
         </View>
       </ScrollView>
