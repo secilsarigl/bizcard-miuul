@@ -25,22 +25,37 @@ Not: Bu liste ilk varsayımdır, ürünü gerçek kullanıcılarla test ettikçe
 ## Durum Notu
 Proje erken aşamada ama artık boş değil: `index.html` içinde, kurulum gerektirmeyen, React/ReactDOM/Babel CDN üzerinden çalışan tek dosyalık bir demo dijital kartvizit mevcut ve kartın altında, canlı Vercel adresine (https://bizcard-miuul-chi.vercel.app/) yönlendiren bir QR kod paneli var. Backend/teknoloji yığını ise henüz seçilmedi (TBD). Aşağıdaki bölümler (Teknoloji Yığını, Geliştirme Komutları, Klasör Yapısı) backend/build tarafı netleşene kadar bilinçli olarak placeholder bırakıldı; kod eklendikçe bu dosyayı gerçek mimari, komutlar ve klasör yapısıyla güncelle, sahte/varsayımsal bilgiyle doldurma.
 
-## Teknoloji Yığını
-Henüz seçilmedi (TBD). Değerlendirilebilecek adaylar:
-- Python (FastAPI/Flask) — data engineering/ML tarafına geçişte tutarlılık sağlar
-- JavaScript/TypeScript (React/Next.js) — modern frontend/fullstack deneyimi katar
+Proje artık bir monorepo: `web/` altında değişmeden duran statik web demosu, `mobile/` altında ise Expo/React Native ile yazılmış, Expo Go üzerinde çalışan bir mobil uygulama var. Mobil uygulama web ile aynı özellik setini sunar; ek olarak native kişiler (contacts) izni ister ve "Kartı Kaydet"/"Kişilerime Ekle" eylemlerinde kartviziti doğrudan cihaz rehberine ekler.
 
-Karar verirken şunu düşün: Hedefin ML/data engineering pozisyonlarıysa, Python tabanlı bir backend (FastAPI) tercih emek CV'ne daha tutarlı bir hikaye katar.
+## Teknoloji Yığını
+- **Web** (`web/`): Statik HTML + React/ReactDOM/Babel (CDN üzerinden, build adımı yok).
+- **Mobil** (`mobile/`): Expo (JavaScript, blank template) + React Native core bileşenleri. Bağımlılıklar: `expo-contacts` (native kişiler izni), `expo-linear-gradient`, `react-native-svg` + `react-native-qrcode-svg` (QR kod), `@react-native-community/datetimepicker`, `@expo/vector-icons`. Tümü Expo Go uyumlu; custom native kod veya config-plugin yok.
+- **Backend:** Henüz seçilmedi (TBD) — form eylemleri şu an sadece `console.log` üretir.
 
 ## Geliştirme Komutları
-Henüz tanımlı değil. Teknoloji yığını seçildiğinde ve proje iskeleti oluşturulduğunda buraya eklenecek.
+- **Web:** Kurulum gerekmez; `web/index.html` dosyasını doğrudan bir tarayıcıda aç.
+- **Mobil:** `cd mobile && npx expo start` — açılan QR kodu Expo Go uygulamasıyla tarayarak veya bir emülatörle çalıştır.
 
 ## Klasör Yapısı
-Henüz oluşturulmadı. Teknoloji seçildikten sonra doldurulacak.
+```
+BizCard/
+  web/
+    index.html          — statik web demosu (değişmedi)
+  mobile/
+    App.js
+    src/
+      data/card.js       — PROFILE verisi
+      components/        — Avatar, ContactList, SocialLinks, ProfileCard,
+                            CardActionsForm, AddToContactsPanel,
+                            PrivacyPolicyModal, QRPanel
+      lib/
+        contacts.js       — expo-contacts izin + rehbere ekleme
+        events.js         — card.save / meeting.request event üretimi
+```
 
 ## Sonraki Adımlar
-- [ ] Teknoloji yığınına karar ver (kariyer hedefiyle uyumlu seç)
-- [ ] Proje iskeletini oluştur
-- [ ] Build/test/lint komutlarını tanımla
-- [ ] Bu dosyayı gerçek mimari ve konvansiyonlarla güncelle
+- [x] Teknoloji yığınına karar ver (web: statik HTML, mobil: Expo/React Native)
+- [x] Proje iskeletini oluştur (mobile/ Expo scaffold)
+- [x] Build/test/lint komutlarını tanımla
+- [x] Bu dosyayı gerçek mimari ve konvansiyonlarla güncelle
 - [ ] (İleri aşama) QR/OCR modülü ekleme fikrini değerlendir — CV alanına köprü olabilir

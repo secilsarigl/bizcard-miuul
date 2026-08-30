@@ -16,8 +16,9 @@ Proje erken aşamada. Şu an demo bir dijital kartvizit arayüzü (`index.html`)
 
 ## Yapı
 
-- `index.html` — kurulum gerektirmeyen, React/ReactDOM/Babel CDN üzerinden çalışan demo kartvizit arayüzü
+- `web/index.html` — kurulum gerektirmeyen, React/ReactDOM/Babel CDN üzerinden çalışan demo kartvizit arayüzü
+- `mobile/` — Expo/React Native ile yazılmış mobil uygulama (Expo Go uyumlu, native kişiler izni dahil)
 - `.claude/skills/bizcard-conventions/` — bileşen yazım kuralları ve webhook veri sözleşmesi referansı
 - `CLAUDE.md` — proje bağlamı, hedefler ve sonraki adımlar
 
-Detaylı mimari, konvansiyonlar ve geliştirme komutları için bkz. [CLAUDE.md](./CLAUDE.md).
+Mobil uygulamayı çalıştırmak için: `cd mobile && npx expo start`, ardından açılan QR kodu Expo Go uygulamasıyla tara.
