@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { PROFILE } from './src/data/card';
 import { ProfileCard } from './src/components/ProfileCard';
+import { AddToContactsPanel } from './src/components/AddToContactsPanel';
 
 export default function App() {
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
@@ -10,6 +11,7 @@ export default function App() {
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content}>
         <ProfileCard profile={PROFILE} onOpenPolicy={() => setIsPolicyOpen(true)} />
+        <AddToContactsPanel profile={PROFILE} />
       </ScrollView>
     </SafeAreaView>
   );
