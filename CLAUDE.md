@@ -23,14 +23,16 @@ BizCard, kullanıcıların bilgilerini girerek dijital kartvizit ve QR kod oluş
 Not: Bu liste ilk varsayımdır, ürünü gerçek kullanıcılarla test ettikçe güncellenmeli.
 
 ## Durum Notu
-Proje erken aşamada ama artık boş değil: `index.html` içinde, kurulum gerektirmeyen, React/ReactDOM/Babel CDN üzerinden çalışan tek dosyalık bir demo dijital kartvizit mevcut ve kartın altında, canlı Vercel adresine (https://bizcard-miuul-chi.vercel.app/) yönlendiren bir QR kod paneli var. Backend henüz seçilmedi (TBD).
+Proje erken aşamada ama artık boş değil: `index.html` içinde, kurulum gerektirmeyen, React/ReactDOM/Babel CDN üzerinden çalışan tek dosyalık bir demo dijital kartvizit mevcut ve kartın altında, canlı Vercel adresine (https://bizcard-miuul-chi.vercel.app/) yönlendiren bir QR kod paneli var. Backend: n8n (local, Docker) — "Kartı Kaydet" ve "Toplantı Talep Et" formları artık webhook'a gerçek POST atıyor (bkz. Teknoloji Yığını).
+
+**Final görevi (n8n <> Claude bootcamp, teslim 17 Eylül):** BizCard'ı uçtan uca çalışan bir asistana dönüştürme. Zorunlu parçalar: webhook (✅ tamamlandı), AI adımı, RAG, hafıza, hata ağı + kariyer bağlamına özel bir serbest özellik. Detay: `Vibe Coding/final görevi/Bitirme_Görevi.pdf`.
 
 Proje artık bir monorepo: `web/` altında değişmeden duran statik web demosu, `mobile/` altında ise Expo/React Native ile yazılmış, Expo Go üzerinde çalışan bir mobil uygulama var. Mobil uygulama web ile aynı özellik setini sunar; ek olarak native kişiler (contacts) izni ister ve "Kartı Kaydet"/"Kişilerime Ekle" eylemlerinde kartviziti doğrudan cihaz rehberine ekler.
 
 ## Teknoloji Yığını
 - **Web** (`web/`): Statik HTML + React/ReactDOM/Babel (CDN üzerinden, build adımı yok).
 - **Mobil** (`mobile/`): Expo (JavaScript, blank template) + React Native core bileşenleri. Bağımlılıklar: `expo-contacts` (native kişiler izni), `expo-linear-gradient`, `react-native-svg` + `react-native-qrcode-svg` (QR kod), `@react-native-community/datetimepicker`, `@expo/vector-icons`. Tümü Expo Go uyumlu; custom native kod veya config-plugin yok.
-- **Backend:** Henüz seçilmedi (TBD) — form eylemleri şu an sadece `console.log` üretir.
+- **Backend:** n8n (local, Docker container, `docker.n8n.io/n8nio/n8n:2.14.2`, port 5678). Webhook endpoint sözleşmesi için `.claude/skills/bizcard-conventions/SKILL.md`'ye bakın. Web `http://localhost:5678/webhook/bizcard`'a POST atıyor; mobil için `mobile/src/lib/events.js`'deki `WEBHOOK_URL`'e PC'nin LAN IP'si girilmeli (Expo Go telefonda çalışır, `localhost` telefonu işaret eder).
 
 ## Geliştirme Komutları
 - **Web:** Kurulum gerekmez; `web/index.html` dosyasını doğrudan bir tarayıcıda aç.

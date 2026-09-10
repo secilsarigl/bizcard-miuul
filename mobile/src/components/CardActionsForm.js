@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Switch, StyleSheet, Platform, 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Feather } from '@expo/vector-icons';
 import { saveOwnerToContactsWithFeedback } from '../lib/contacts';
-import { buildCardSaveEvent, buildMeetingRequestEvent, logEvent } from '../lib/events';
+import { buildCardSaveEvent, buildMeetingRequestEvent, logEvent, sendEvent } from '../lib/events';
 
 function toLocalDateString(date) {
   const year = date.getFullYear();
@@ -49,9 +49,13 @@ export function CardActionsForm({ profile, onOpenPolicy }) {
 
       if (action === 'save') {
         await saveOwnerToContactsWithFeedback(profile);
-        logEvent(buildCardSaveEvent(profile, visitor));
+        const cardEvent = buildCardSaveEvent(profile, visitor);
+        logEvent(cardEvent);
+        await sendEvent(cardEvent);
       } else {
-        logEvent(buildMeetingRequestEvent(profile, visitor, toLocalDateString(preferredDate)));
+        const meetingEvent = buildMeetingRequestEvent(profile, visitor, toLocalDateString(preferredDate));
+        logEvent(meetingEvent);
+        await sendEvent(meetingEvent);
       }
 
       setVisitorName('');
