@@ -16,8 +16,16 @@ Proje erken aşamada. Şu an demo bir dijital kartvizit arayüzü (`index.html`)
 
 ## Yapı
 
-- `index.html` — kurulum gerektirmeyen, React/ReactDOM/Babel CDN üzerinden çalışan demo kartvizit arayüzü
+- `web/index.html` — kurulum gerektirmeyen, React/ReactDOM/Babel CDN üzerinden çalışan demo kartvizit arayüzü
+- `mobile/` — Expo/React Native ile yazılmış mobil uygulama (Expo Go uyumlu, native kişiler izni dahil)
 - `.claude/skills/bizcard-conventions/` — bileşen yazım kuralları ve webhook veri sözleşmesi referansı
 - `CLAUDE.md` — proje bağlamı, hedefler ve sonraki adımlar
 
-Detaylı mimari, konvansiyonlar ve geliştirme komutları için bkz. [CLAUDE.md](./CLAUDE.md).
+Mobil uygulamayı çalıştırmak için: `cd mobile && npx expo start`, ardından açılan QR kodu Expo Go uygulamasıyla tara.
+
+## "Kartı Kaydet" vs "Telefonuma Ekle"
+
+Mobil uygulamada kartvizit sahibini rehbere ekleyen iki farklı eylem var:
+
+- **Telefonuma Ekle** (`AddToContactsPanel`) — tek dokunuşlu, bağımsız bir buton. Sadece kartvizit sahibinin bilgilerini (ad, e-posta, telefon) ziyaretçinin rehberine ekler; form yok, backend'e bir şey gönderilmez.
+- **Kartı Kaydet** (`CardActionsForm`) — önce ziyaretçinin adı/e-postası ve Gizlilik Politikası onayı isteniyor. Onaylandıktan sonra hem kartvizit sahibi rehbere ekleniyor hem de `card.save` event'i n8n webhook'una gönderiliyor (yani kart sahibine "şu kişi kartı kaydetti" bilgisi/lead kaydı ulaşıyor).

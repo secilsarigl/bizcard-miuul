@@ -23,24 +23,41 @@ BizCard, kullanıcıların bilgilerini girerek dijital kartvizit ve QR kod oluş
 Not: Bu liste ilk varsayımdır, ürünü gerçek kullanıcılarla test ettikçe güncellenmeli.
 
 ## Durum Notu
-Proje erken aşamada ama artık boş değil: `index.html` içinde, kurulum gerektirmeyen, React/ReactDOM/Babel CDN üzerinden çalışan tek dosyalık bir demo dijital kartvizit mevcut ve kartın altında, canlı Vercel adresine (https://bizcard-miuul-chi.vercel.app/) yönlendiren bir QR kod paneli var. Backend/teknoloji yığını ise henüz seçilmedi (TBD). Aşağıdaki bölümler (Teknoloji Yığını, Geliştirme Komutları, Klasör Yapısı) backend/build tarafı netleşene kadar bilinçli olarak placeholder bırakıldı; kod eklendikçe bu dosyayı gerçek mimari, komutlar ve klasör yapısıyla güncelle, sahte/varsayımsal bilgiyle doldurma.
+Proje erken aşamada ama artık boş değil: `index.html` içinde, kurulum gerektirmeyen, React/ReactDOM/Babel CDN üzerinden çalışan tek dosyalık bir demo dijital kartvizit mevcut ve kartın altında, canlı Vercel adresine (https://bizcard-miuul-chi.vercel.app/) yönlendiren bir QR kod paneli var. Backend: n8n (local, Docker) — "Kartı Kaydet" ve "Toplantı Talep Et" formları artık webhook'a gerçek POST atıyor (bkz. Teknoloji Yığını).
+
+**Final görevi (n8n <> Claude bootcamp, teslim 17 Eylül):** BizCard'ı uçtan uca çalışan bir asistana dönüştürme. Zorunlu parçalar: webhook (✅ tamamlandı), AI adımı, RAG, hafıza, hata ağı + kariyer bağlamına özel bir serbest özellik. Detay: `Vibe Coding/final görevi/Bitirme_Görevi.pdf`.
+
+Proje artık bir monorepo: `web/` altında değişmeden duran statik web demosu, `mobile/` altında ise Expo/React Native ile yazılmış, Expo Go üzerinde çalışan bir mobil uygulama var. Mobil uygulama web ile aynı özellik setini sunar; ek olarak native kişiler (contacts) izni ister ve "Kartı Kaydet"/"Kişilerime Ekle" eylemlerinde kartviziti doğrudan cihaz rehberine ekler.
 
 ## Teknoloji Yığını
-Henüz seçilmedi (TBD). Değerlendirilebilecek adaylar:
-- Python (FastAPI/Flask) — data engineering/ML tarafına geçişte tutarlılık sağlar
-- JavaScript/TypeScript (React/Next.js) — modern frontend/fullstack deneyimi katar
-
-Karar verirken şunu düşün: Hedefin ML/data engineering pozisyonlarıysa, Python tabanlı bir backend (FastAPI) tercih emek CV'ne daha tutarlı bir hikaye katar.
+- **Web** (`web/`): Statik HTML + React/ReactDOM/Babel (CDN üzerinden, build adımı yok).
+- **Mobil** (`mobile/`): Expo (JavaScript, blank template) + React Native core bileşenleri. Bağımlılıklar: `expo-contacts` (native kişiler izni), `expo-linear-gradient`, `react-native-svg` + `react-native-qrcode-svg` (QR kod), `@react-native-community/datetimepicker`, `@expo/vector-icons`. Tümü Expo Go uyumlu; custom native kod veya config-plugin yok.
+- **Backend:** n8n (local, Docker container, `docker.n8n.io/n8nio/n8n:2.14.2`, port 5678). Webhook endpoint sözleşmesi için `.claude/skills/bizcard-conventions/SKILL.md`'ye bakın. Web `http://localhost:5678/webhook/bizcard`'a POST atıyor; mobil için `mobile/src/lib/events.js`'deki `WEBHOOK_URL`'e PC'nin LAN IP'si girilmeli (Expo Go telefonda çalışır, `localhost` telefonu işaret eder).
 
 ## Geliştirme Komutları
-Henüz tanımlı değil. Teknoloji yığını seçildiğinde ve proje iskeleti oluşturulduğunda buraya eklenecek.
+- **Web:** Kurulum gerekmez; `web/index.html` dosyasını doğrudan bir tarayıcıda aç.
+- **Mobil:** `cd mobile && npx expo start` — açılan QR kodu Expo Go uygulamasıyla tarayarak veya bir emülatörle çalıştır.
 
 ## Klasör Yapısı
-Henüz oluşturulmadı. Teknoloji seçildikten sonra doldurulacak.
+```
+BizCard/
+  web/
+    index.html          — statik web demosu (değişmedi)
+  mobile/
+    App.js
+    src/
+      data/card.js       — PROFILE verisi
+      components/        — Avatar, ContactList, SocialLinks, ProfileCard,
+                            CardActionsForm, AddToContactsPanel,
+                            PrivacyPolicyModal, QRPanel
+      lib/
+        contacts.js       — expo-contacts izin + rehbere ekleme
+        events.js         — card.save / meeting.request event üretimi
+```
 
 ## Sonraki Adımlar
-- [ ] Teknoloji yığınına karar ver (kariyer hedefiyle uyumlu seç)
-- [ ] Proje iskeletini oluştur
-- [ ] Build/test/lint komutlarını tanımla
-- [ ] Bu dosyayı gerçek mimari ve konvansiyonlarla güncelle
+- [x] Teknoloji yığınına karar ver (web: statik HTML, mobil: Expo/React Native)
+- [x] Proje iskeletini oluştur (mobile/ Expo scaffold)
+- [x] Build/test/lint komutlarını tanımla
+- [x] Bu dosyayı gerçek mimari ve konvansiyonlarla güncelle
 - [ ] (İleri aşama) QR/OCR modülü ekleme fikrini değerlendir — CV alanına köprü olabilir

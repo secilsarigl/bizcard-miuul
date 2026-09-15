@@ -405,6 +405,29 @@
       ],
     };
 
+    // --- Webhook -------------------------------------------------------
+    // n8n local instance (Docker, bkz. n8n/Kurulum Rehberi). Tek bir
+    // Webhook node "event" alanına göre (card.save / meeting.request)
+    // downstream'de routing yapar — bkz. bizcard-conventions SKILL.md.
+    const WEBHOOK_URL = "http://localhost:5678/webhook/bizcard";
+
+    async function sendWebhookEvent(event) {
+      try {
+        const response = await fetch(WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(event),
+        });
+        if (!response.ok) {
+          console.error("Webhook isteği başarısız:", response.status);
+        }
+        return response.ok;
+      } catch (error) {
+        console.error("Webhook'a ulaşılamadı:", error);
+        return false;
+      }
+    }
+
     // --- İkonlar -----------------------------------------------------
 
     function PhoneIcon() {
@@ -556,7 +579,7 @@
       const [isSubmitting, setIsSubmitting] = React.useState(false);
       const isSubmittingRef = React.useRef(false);
 
-      function handleSubmit(event) {
+      async function handleSubmit(event) {
         event.preventDefault();
 
         if (isSubmittingRef.current) return;
@@ -583,7 +606,7 @@
         if (action === "save") {
           downloadVCard(profile);
 
-          console.log({
+          await sendWebhookEvent({
             event: "card.save",
             timestamp: new Date().toISOString(),
             payload: {
@@ -604,7 +627,7 @@
             },
           });
         } else {
-          console.log({
+          await sendWebhookEvent({
             event: "meeting.request",
             timestamp: new Date().toISOString(),
             payload: {
@@ -625,13 +648,10 @@
 
         form.reset();
 
-        // Buton kısa süre devre dışı kalır; hızlı art arda tıklamalarda
-        // ikinci gönderim engellenir. Gerçek webhook eklendiğinde bu
-        // gecikme yerine fetch'in tamamlanmasını beklemeye geçilecek.
-        window.setTimeout(() => {
-          isSubmittingRef.current = false;
-          setIsSubmitting(false);
-        }, 800);
+        // Buton, fetch tamamlanana kadar devre dışı kalır; hızlı art arda
+        // tıklamalarda ikinci gönderim engellenir.
+        isSubmittingRef.current = false;
+        setIsSubmitting(false);
       }
 
       return (
